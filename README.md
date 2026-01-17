@@ -16,3 +16,5 @@ This project is based on the
 ## Getting started
 
 To get started with hello-nrfcloud firmware for the Thingy:91 X, follow [documentation](https://docs.nordicsemi.com/bundle/addon-nrfcloud_firmware-latest/page/index.html).
+
+Modified by Aspen Erlandsson.
