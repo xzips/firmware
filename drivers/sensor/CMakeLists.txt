@@ -2,3 +2,4 @@
 # SPDX-License-Identifier: Apache-2.0
 
 add_subdirectory_ifdef(CONFIG_GAS_SENSOR_DUMMY gas_sensor_dummy)
+add_subdirectory(ir_temp)

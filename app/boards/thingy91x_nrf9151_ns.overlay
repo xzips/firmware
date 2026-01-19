@@ -13,6 +13,14 @@
 / {
 	aliases {
 		gas-sensor = &bme680;
+		mlx90632 = &mlx90632;
+		expansion-3v3-en = &expansion_3v3_en;
+	};
+
+	expansion_3v3_en: expansion-3v3-en {
+		gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+		label = "EXPANSION_3V3_EN";
+		status = "okay";
 	};
 
 	chosen {
@@ -23,6 +31,13 @@
 
 &uart1 {
 	status = "okay";
+};
+
+&i2c2 {
+	mlx90632: mlx90632@3a {
+		compatible = "zephyr,i2c-device";
+		reg = <0x3a>;
+	};
 };
 
 
