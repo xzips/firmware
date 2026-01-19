@@ -41,10 +41,6 @@ BUILD_ASSERT(CONFIG_APP_ENVIRONMENTAL_WATCHDOG_TIMEOUT_SECONDS >
 			"Watchdog timeout must be greater than maximum execution time");
 
 static const struct device *const sensor_dev = DEVICE_DT_GET(DT_ALIAS(gas_sensor));
-#if DT_HAS_ALIAS(expansion_3v3_en)
-static const struct gpio_dt_spec stemma_3v3_en =
-	GPIO_DT_SPEC_GET(DT_ALIAS(expansion_3v3_en), gpios);
-#endif
 
 static bool ir_temp_ready;
 
@@ -205,23 +201,22 @@ static void update_temp_led(double temp_c)
 
 static int ir_temp_init(void)
 {
+	const struct device *gpio0 = DEVICE_DT_GET(DT_NODELABEL(gpio0));
 	int ret;
 
-#if DT_HAS_ALIAS(expansion_3v3_en)
 	/* IR temp init: power the external Stemma connector before I2C access. */
-	if (!device_is_ready(stemma_3v3_en.port)) {
-		LOG_ERR("EXPANSION_3V3_EN GPIO not ready");
+	if (!device_is_ready(gpio0)) {
+		LOG_ERR("GPIO0 not ready");
 		return -ENODEV;
 	}
 
-	ret = gpio_pin_configure_dt(&stemma_3v3_en, GPIO_OUTPUT_ACTIVE);
+	ret = gpio_pin_configure(gpio0, 3, GPIO_OUTPUT_ACTIVE);
 	if (ret) {
 		LOG_ERR("Failed to enable EXPANSION_3V3_EN: %d", ret);
 		return ret;
 	}
 
 	k_msleep(500);
-#endif
 
 	/* IR temp init: initialize the MLX90632 after power is on. */
 	ret = (int)mlx90632_zephyr_init();

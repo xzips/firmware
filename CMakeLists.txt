@@ -6,5 +6,6 @@
 
 
 zephyr_include_directories(include)
+zephyr_include_directories(drivers/sensor/ir_temp)
 
 add_subdirectory(drivers)
